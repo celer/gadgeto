@@ -3,6 +3,7 @@ module github.com/loopfz/gadgeto
 require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-gorp/gorp v2.2.0+incompatible
+	github.com/go-playground/validator/v10 v10.2.0
 	github.com/golang/protobuf v1.3.5 // indirect
 	github.com/google/uuid v1.1.1
 	github.com/juju/errors v0.0.0-20200330140219-3fe23663418f

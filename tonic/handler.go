@@ -9,14 +9,26 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin"
+	validator "github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	validator "gopkg.in/go-playground/validator.v9"
 )
 
 var (
-	validatorObj  *validator.Validate
-	validatorOnce sync.Once
+	validatorObj          *validator.Validate
+	validatorOnce         sync.Once
+	validationConstructor ValidationConstructor = DefaultValidationConstructor
 )
+
+type ValidationConstructor func() *validator.Validate
+
+func SetValidationConstructor(c ValidationConstructor) {
+	validationConstructor = c
+}
+
+// DefaultValidationConstructor constructs a validator
+func DefaultValidationConstructor() *validator.Validate {
+	return validator.New()
+}
 
 // Handler returns a Gin HandlerFunc that wraps the handler passed
 // in parameters.
@@ -152,7 +164,7 @@ func RegisterValidation(tagName string, validationFunc validator.Func) error {
 
 func initValidator() {
 	validatorOnce.Do(func() {
-		validatorObj = validator.New()
+		validatorObj = validationConstructor()
 		validatorObj.SetTagName(ValidationTag)
 	})
 }

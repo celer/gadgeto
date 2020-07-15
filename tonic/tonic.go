@@ -14,7 +14,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	validator "gopkg.in/go-playground/validator.v9"
+	validator "github.com/go-playground/validator/v10"
 )
 
 // DefaultMaxBodyBytes is the maximum allowed size of a request body in bytes.
@@ -247,6 +247,16 @@ func (be BindError) Error() string {
 		)
 	}
 	return fmt.Sprintf("binding error: %s", be.message)
+}
+
+// Type returns the input objects type
+func (be BindError) Type() reflect.Type {
+	return be.typ
+}
+
+// Field returns the field
+func (be BindError) Field() string {
+	return be.field
 }
 
 // ValidationErrors returns the errors from the validate process.
