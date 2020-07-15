@@ -234,6 +234,7 @@ type BindError struct {
 	message       string
 	typ           reflect.Type
 	field         string
+	in            interface{}
 }
 
 // Error implements the builtin error interface for BindError.
@@ -247,6 +248,10 @@ func (be BindError) Error() string {
 		)
 	}
 	return fmt.Sprintf("binding error: %s", be.message)
+}
+
+func (be BindError) Input() interface{} {
+	return be.in
 }
 
 // Type returns the input objects type

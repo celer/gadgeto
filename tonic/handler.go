@@ -85,7 +85,7 @@ func Handler(h interface{}, status int, options ...func(*Route)) gin.HandlerFunc
 			input := reflect.New(in)
 			// Bind the body with the hook.
 			if err := bindHook(c, input.Interface()); err != nil {
-				handleError(c, BindError{message: err.Error(), typ: in})
+				handleError(c, BindError{message: err.Error(), typ: in, in: input})
 				return
 			}
 			// Bind query-parameters.
@@ -107,7 +107,7 @@ func Handler(h interface{}, status int, options ...func(*Route)) gin.HandlerFunc
 			initValidator()
 			args = append(args, input)
 			if err := validatorObj.Struct(input.Interface()); err != nil {
-				handleError(c, BindError{message: err.Error(), validationErr: err})
+				handleError(c, BindError{message: err.Error(), validationErr: err, in: input, typ: in})
 				return
 			}
 		}
